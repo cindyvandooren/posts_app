@@ -52,6 +52,12 @@ class User < ActiveRecord::Base
     UserMailer.account_activation(self).deliver_now
   end
 
+  # Defines a proto-feed.
+  # See "Following users" for the full implementation.
+  def feed
+    Micropost.where("user_id = ?", id)
+  end
+
   # Sets the password reset attributes.
   def create_reset_digest
     self.reset_token = User.new_token
@@ -81,7 +87,5 @@ class User < ActiveRecord::Base
       self.activation_digest = User.digest(activation_token)
     end
 end
-
-
 
   
